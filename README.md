@@ -167,13 +167,23 @@ Mongoose allows you to use schema validation if you want to ensure that certain 
 
 within the schema. This tells us that the `content` field must have type `String`, and that it is required for documents in that collection. A freet must have a `String` type value for the `content` field to be added to the freets collection.
 
+
+
+
+
 ## API routes
 
 The following api routes have already been implemented for you (**Make sure to document all the routes that you have added.**):
 
+
+
 #### `GET /`
 
 This renders the `index.html` file that will be used to interact with the backend
+
+
+
+## Freets
 
 #### `GET /api/freets` - Get all the freets
 
@@ -239,6 +249,10 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if the user is not the author of the freet
 - `400` if the new freet content is empty or a stream of empty spaces
 - `413` if the new freet content is more than 140 characters long
+
+
+
+## User
 
 #### `POST /api/users/session` - Sign in user
 
@@ -313,3 +327,338 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - `403` if the user is not logged in
+
+
+
+## Bookmark
+
+#### `GET /api/bookmarks` - Get all bookmarks
+
+**Returns**
+
+- Array of all bookmarks, sorted in descending order by date saved
+
+**Throws**
+
+- `403` if there is a user already logged in
+- `400` if username or password is in the wrong format
+- `409` if username is already in use
+
+#### `GET /api/bookmarks?authorId=id` - Get all bookmarks saved by given author
+
+**Returns**
+
+- Array of bookmarks created by author with id `authorId`
+
+**Throws**
+
+- `400` if authorId is not given
+- `404` if no user has given authorId
+
+#### `POST /api/bookmarks` - Create a new bookmark
+
+**Body**
+
+- `freetId` _{string}_ - The id of the freet to bookmark
+
+**Returns**
+
+- A success message
+- An object with the created bookmark
+
+**Throws**
+
+- `403` if user is not logged in 
+- `400` if freet does not exist
+- `413` if freet content is >140 characters long
+
+#### `DELETE /api/bookmarks/:bookmarkId` - Delete bookmark
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in or is not the saver of the bookmark
+- `404` if no bookmark exists with `bookmarkId`
+
+
+
+## TODO: Follow
+
+#### `GET /api/follow?following=userId` - Get all accounts following given user
+
+**Returns**
+
+- Array of accounts following user with id `userId`
+
+**Throws**
+
+- `400` if `following` is not given
+- `404` if no user exists with `following`
+
+#### `GET /api/follow?follower=userId` - Get all accounts followed by given user
+
+**Returns**
+
+- Array of accounts following user with id `userId`
+
+**Throws**
+
+- `400` if `follower` is not given
+- `404` if no user exists with `follower`
+
+#### `POST /api/follow` - Create a new follow
+
+**Body**
+- `follower` _{string}_ - The id of the follower user
+- `followed` _{string}_ - The id of the followed user
+
+**Returns**
+
+- A success message
+- A created Follow object
+
+**Throws**
+
+- `400` if `follower` or `followed` is not given
+- `403` if `follower` is not logged in
+- `404` if no user exists with `follower` or `followed`
+
+#### `DELETE /api/follow/:followId` - Delete an existing follow
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if user is not logged in
+- `404` if no follow object/relationship exists with `followId`
+
+
+
+## TODO: Category
+
+#### `GET /api/category?type=bookmark&user=userId` - Get all of user's bookmark categories
+
+**Returns**
+
+- Array of categories containing bookmarks saved by user with id `userId`
+
+**Throws**
+
+- `400` if `id` is not given
+- `404` if no user exists with `id`
+
+#### `GET /api/category?type=follow&user=userId` - Get all of user's follow categories
+
+**Returns**
+
+- Array of categories containing accounts followed by user with id `userId`
+
+**Throws**
+
+- `400` if `id` is not given
+- `404` if no user exists with `id`
+
+#### `POST /api/category?type=bookmark` - Create a new bookmark category
+
+**Body**
+- `categoryName` _{string}_ - The name of the category
+- `userId` _{string}_ - The id of the user creating the category
+- `bookmarkId` _{string}_ - A bookmark id to initialize the category's creation
+
+**Returns**
+
+- A success message
+- A created category object
+
+**Throws**
+
+- `400` if `bookmarkId` is not given
+- `403` if user is not logged in
+- `404` if no user exists with `userId` or no bookmark exists with `bookmarkId`
+
+#### `POST /api/category?type=follow` - Create a new follow category
+
+**Body**
+- `categoryName` _{string}_ - The name of the category
+- `userId` _{string}_ - The id of the user creating the category
+- `followId` _{string}_ - A follow id to initialize the category's creation
+
+**Returns**
+
+- A success message
+- A created category object
+
+**Throws**
+
+- `400` if `followId` is not given
+- `403` if user is not logged in
+- `404` if no user exists with `userId` or no follow relationship exists with `followId`
+
+#### `PUT /api/category/:categoryId?` - Update an existing category
+
+**Body**
+- `categoryId` _{string}_ - The id of the category
+- `content` _{string}_ - A bookmark or followed account to add to a category
+
+**Returns**
+
+- A success message
+- An updated category object
+
+**Throws**
+
+- `400` if `content` is empty/undefined
+- `403` if user is not logged in or user is not creater of category
+- `404` if no category exists with `categoryId`
+
+#### `DELETE /api/category/:categoryId` - Delete an existing category
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if user is not logged in or user is not creater of category
+- `404` if no category exists with `categoryId`
+
+
+
+## TODO: FilteredTimeline
+
+#### `GET /api/timeline?category=categoryId` - Get feed by selected filter followCategory
+
+**Returns**
+
+- Array of posts from accounts in category `categoryId` for user to view/interact with
+
+**Throws**
+
+- `400` if `categoryId` is not given
+- `404` if no category exists with `categoryId`
+
+
+
+## TODO: Timer
+
+#### `GET /api/timer?user=userId` - Get how much time is left to browse for user
+
+**Returns**
+
+- Float of how many seconds are left
+
+**Throws**
+
+- `400` if `userId` is not given
+- `404` if no user exists with `userId`
+
+#### `POST /api/timer` - Create a new timer
+
+**Body**
+- `timer` _{float}_ - Time limit that user can spend on app
+- `userId` _{string}_ - Id of user setting timer
+
+**Returns**
+
+- A success message
+- A created timer object
+
+**Throws**
+
+- `400` if `timer` is not given or if user has already initialized a timer already exists
+- `403` if user is not logged in
+- `404` if no user exists with `userId`
+
+#### `PUT /api/timer/:timerId?` - Update an existing timer
+
+**Body**
+- `timerId` _{string}_ - The id of the timer
+- `timer` _{float}_ - A new time the user can spend in the app
+
+**Returns**
+
+- A success message
+- An updated timer object
+
+**Throws**
+
+- `400` if `timer` is empty/undefined
+- `403` if user is not logged in or user is not creater of timer
+- `404` if no timer exists with `timerId`
+
+#### `DELETE /api/timer/:timerId` - Delete an existing timer
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if user is not logged in or user is not creater of timer
+- `404` if no timer exists with `timerId`
+
+
+
+## TODO: SourceCite
+
+#### `GET /api/cite?freet=freetId` - Get source cited by freet
+
+**Returns**
+
+- Source cited for freet `freetId`
+
+**Throws**
+
+- `400` if `freetId` is not given
+- `404` if no freet exists with `freetId`
+
+#### `POST /api/cite` - Create a new SourceCite
+
+**Body**
+- `freetId` _{string}_ - Id of freet being cited
+- `source` _{string}_ - URL/title of cited source
+
+**Returns**
+
+- A success message
+- A created source object
+
+**Throws**
+
+- `400` if `source` is not given
+- `403` if user is not logged in
+- `404` if no freet exists with `freetId`
+
+#### `PUT /api/cite/:citeId?` - Update an existing SourceCite
+
+**Body**
+- `citeId` _{string}_ - The id of the SourceCite
+- `freetId` _{string}_ - The id of the cited freet
+- `source` _{string}_ - URL/title of cited source
+
+**Returns**
+
+- A success message
+- An updated source object
+
+**Throws**
+
+- `400` if `sourceId` is empty/undefined 
+- `403` if user is not logged in or user is not creater of source `sourceId`
+- `404` if no source exists with `sourceId`
+
+#### `DELETE /api/cite/:citeId` - Delete an existing SourceCite
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if user is not logged in or user is not creater of SourceCite
+- `404` if no SourceCite exists with `sourceId`

@@ -2,7 +2,6 @@ import type {NextFunction, Request, Response} from 'express';
 import express from 'express';
 import BookmarkCollection from './collection';
 import * as userValidator from '../user/middleware';
-import * as freetValidator from '../freet/middleware';
 import * as bookmarkValidator from '../bookmark/middleware';
 import * as util from './util';
 
@@ -64,7 +63,7 @@ router.post(
   '/',
   [
     userValidator.isUserLoggedIn,
-    freetValidator.isFreetExists
+    bookmarkValidator.isFreetExists
   ],
   async (req: Request, res: Response) => {
     const authorId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn

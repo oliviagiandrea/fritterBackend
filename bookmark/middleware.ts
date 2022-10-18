@@ -22,6 +22,25 @@ import FreetCollection from '../freet/collection';
 };
 
 /**
+ * Checks if a freet with freetId is req.body exists
+ */
+const isFreetExists = async (req: Request, res: Response, next: NextFunction) => {
+  const freetId = req.body.freetId;
+  const validFormat = Types.ObjectId.isValid(freetId);
+  const freet = validFormat ? await FreetCollection.findOne(freetId) : '';
+  if (!freet) {
+    res.status(404).json({
+      error: {
+        freetNotFound: `Freet with freet ID ${freetId} does not exist.`
+      }
+    });
+    return;
+  }
+
+  next();
+};
+
+/**
  * Checks if the current user is the creator of the bookmark whose bookmarkId is in req.params
  */
 const isValidBookmarkModifier = async (req: Request, res: Response, next: NextFunction) => {
@@ -39,5 +58,6 @@ const isValidBookmarkModifier = async (req: Request, res: Response, next: NextFu
 
 export {
   isBookmarkExists,
+  isFreetExists,
   isValidBookmarkModifier
 };

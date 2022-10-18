@@ -36,7 +36,7 @@ const constructBookmarkResponse = (bookmark: HydratedDocument<Bookmark>): Bookma
     ...bookmarkCopy,
     _id: bookmarkCopy._id.toString(),
     authorId: username,
-    freetId: bookmarkCopy.freetId.toString(),
+    freetId: bookmarkCopy.freetId._id.toString(),
     dateSaved: formatDate(bookmark.dateSaved),
   };
 };

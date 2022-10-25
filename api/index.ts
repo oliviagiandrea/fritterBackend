@@ -9,9 +9,10 @@ import http from 'http';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import * as userValidator from '../user/middleware';
-import {userRouter} from '../user/router';
-import {freetRouter} from '../freet/router';
 import {bookmarkRouter} from '../bookmark/router';
+import {followRouter} from '../follow/router';
+import {freetRouter} from '../freet/router';
+import {userRouter} from '../user/router';
 
 // Load environmental variables
 dotenv.config({});
@@ -36,7 +37,7 @@ mongoose.connection.on('error', err => {
   console.error(err);
 });
 
-// Initalize an express app
+// Initialize an express app
 const app = express();
 
 // Declare the root directory
@@ -78,6 +79,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/users', userRouter);
 app.use('/api/freets', freetRouter);
 app.use('/api/bookmarks', bookmarkRouter);
+app.use('/api/follow', followRouter);
 
 // Catch all the other routes and display error message
 app.all('*', (req: Request, res: Response) => {

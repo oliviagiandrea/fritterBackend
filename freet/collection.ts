@@ -1,6 +1,8 @@
 import type {HydratedDocument, Types} from 'mongoose';
 import type {Freet} from './model';
+import {Types as T} from 'mongoose';
 import FreetModel from './model';
+import FollowerCollection from '../follower/collection';
 import UserCollection from '../user/collection';
 
 /**
@@ -19,12 +21,17 @@ class FreetCollection {
    * @param {string} content - The id of the content of the freet
    * @return {Promise<HydratedDocument<Freet>>} - The newly created freet
    */
-  static async addOne(authorId: Types.ObjectId | string, content: string): Promise<HydratedDocument<Freet>> {
+  static async addOne(
+    authorId: Types.ObjectId | string,
+    content: string,
+    source: string,
+  ): Promise<HydratedDocument<Freet>> {
     const date = new Date();
     const freet = new FreetModel({
       authorId,
       dateCreated: date,
       content,
+      source,
       dateModified: date
     });
     await freet.save(); // Saves freet to MongoDB
@@ -37,7 +44,9 @@ class FreetCollection {
    * @param {string} freetId - The id of the freet to find
    * @return {Promise<HydratedDocument<Freet>> | Promise<null> } - The freet with the given freetId, if any
    */
-  static async findOne(freetId: Types.ObjectId | string): Promise<HydratedDocument<Freet>> {
+  static async findOne(
+    freetId: Types.ObjectId | string
+  ): Promise<HydratedDocument<Freet>> {
     return FreetModel.findOne({_id: freetId}).populate('authorId');
   }
 
@@ -57,7 +66,9 @@ class FreetCollection {
    * @param {string} username - The username of author of the freets
    * @return {Promise<HydratedDocument<Freet>[]>} - An array of all of the freets
    */
-  static async findAllByUsername(username: string): Promise<Array<HydratedDocument<Freet>>> {
+  static async findAllByUsername(
+    username: string
+  ): Promise<Array<HydratedDocument<Freet>>> {
     const author = await UserCollection.findOneByUsername(username);
     return FreetModel.find({authorId: author._id}).populate('authorId');
   }
@@ -69,9 +80,14 @@ class FreetCollection {
    * @param {string} content - The new content of the freet
    * @return {Promise<HydratedDocument<Freet>>} - The newly updated freet
    */
-  static async updateOne(freetId: Types.ObjectId | string, content: string): Promise<HydratedDocument<Freet>> {
+  static async updateOne(
+    freetId: Types.ObjectId | string,
+    content: string,
+    source: string
+  ): Promise<HydratedDocument<Freet>> {
     const freet = await FreetModel.findOne({_id: freetId});
     freet.content = content;
+    freet.source = source;
     freet.dateModified = new Date();
     await freet.save();
     return freet.populate('authorId');
@@ -94,7 +110,10 @@ class FreetCollection {
    * @param {string} authorId - The id of author of freets
    */
   static async deleteMany(authorId: Types.ObjectId | string): Promise<void> {
-    await FreetModel.deleteMany({authorId});
+    const freets = await FreetModel.find({authorId});
+    freets.forEach(async f => {
+      await f.delete();
+    });
   }
 }
 

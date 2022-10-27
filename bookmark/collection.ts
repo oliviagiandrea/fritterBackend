@@ -17,14 +17,14 @@ class BookmarkCollection {
    * @return {Promise<HydratedDocument<Bookmark>>} - The newly created bookmark
    */
   static async addOne(
-    freetId: Types.ObjectId | string, 
+    freetId: Types.ObjectId | string,
     authorId: Types.ObjectId | string): Promise<HydratedDocument<Bookmark>> {
-      const date = new Date();
-      const bookmark = new BookmarkModel({
-        freetId,
-        authorId,
-        dateSaved: date,
-      });
+    const date = new Date();
+    const bookmark = new BookmarkModel({
+      freetId,
+      authorId,
+      dateSaved: date
+    });
     await bookmark.save(); // Saves bookmark to MongoDB
     return bookmark.populate('freetId authorId dateSaved');
   }

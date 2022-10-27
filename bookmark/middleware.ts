@@ -6,7 +6,7 @@ import FreetCollection from '../freet/collection';
 /**
  * Checks if a bookmark with bookmarkId in req.params exists
  */
- const isBookmarkExists = async (req: Request, res: Response, next: NextFunction) => {
+const isBookmarkExists = async (req: Request, res: Response, next: NextFunction) => {
   const validFormat = Types.ObjectId.isValid(req.params.bookmarkId);
   const bookmark = validFormat ? await BookmarkCollection.findOne(req.params.bookmarkId) : '';
   if (!bookmark) {
@@ -25,7 +25,7 @@ import FreetCollection from '../freet/collection';
  * Checks if a freet with freetId in req.body exists
  */
 const isFreetExists = async (req: Request, res: Response, next: NextFunction) => {
-  const freetId = req.body.freetId;
+  const {freetId} = req.body;
   const validFormat = Types.ObjectId.isValid(freetId);
   const freet = validFormat ? await FreetCollection.findOne(freetId) : '';
   if (!freet) {

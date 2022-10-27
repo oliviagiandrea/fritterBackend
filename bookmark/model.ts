@@ -45,7 +45,7 @@ const BookmarkSchema = new Schema<Bookmark>({
   dateSaved: {
     type: Date,
     required: true
-  },
+  }
 });
 
 const BookmarkModel = model<Bookmark>('Bookmark', BookmarkSchema);

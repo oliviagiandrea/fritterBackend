@@ -1,273 +1,165 @@
 <html>
+  <head>
+    <title>Fritter</title>
+    <meta name="author" content="6.170 Staff" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script src="/scripts/freet.js"></script>
+    <script src="/scripts/follow.js"></script>
+    <script src="/scripts/user.js"></script>
+    <script src="/scripts/index.js"></script>
+  </head>
 
-<head>
-  <title>Fritter</title>
-  <meta name="author" content="6.170 Staff">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/stylesheets/style.css">
-  <script src="/scripts/follow.js"></script>
-  <script src="/scripts/freet.js"></script>
-  <script src="/scripts/user.js"></script>
-  <script src="/scripts/bookmark.js"></script>
-  <script src="/scripts/index.js"></script>
-</head>
+  <body>
+    <header>
+      <h1>Fritter</h1>
+    </header>
 
-<body>
-  <header>
-    <h1>Fritter</h1>
-  </header>
-
-  <main class="two-col">
-    <section id="operations-container">
-      <h2>Operations:</h2>
-      <div class="scrollbox">
-
-        <!-- USERS -->
-        <section id="users">
-          <h3>User API</h3>
+    <main class="two-col">
+      <section id="operations-container">
+        <h2>Operations:</h2>
+        <div class="scrollbox">
           <form id="create-user">
             <h3>Create User</h3>
             <div>
               <label for="username">Username:</label>
-              <input id="username" name="username">
+              <input id="username" name="username" />
             </div>
             <div>
               <label for="password">Password:</label>
-              <input id="password" name="password">
+              <input id="password" name="password" />
             </div>
-            <input type="submit" value="Create User">
+            <input type="submit" value="Create User" />
           </form>
 
           <form id="delete-user">
             <h3>Delete User</h3>
-            <input type="submit" value="Delete User">
+            <input type="submit" value="Delete User" />
           </form>
 
           <form id="change-username">
             <h3>Change Username</h3>
             <div>
               <label for="username">New Username:</label>
-              <input id="username" name="username">
+              <input id="username" name="username" />
             </div>
-            <input type="submit" value="Change Username">
+            <input type="submit" value="Change Username" />
           </form>
 
           <form id="change-password">
             <h3>Change Password</h3>
             <div>
               <label for="password">New Password:</label>
-              <input id="password" name="password">
+              <input id="password" name="password" />
             </div>
-            <input type="submit" value="Change Password">
+            <input type="submit" value="Change Password" />
           </form>
 
           <form id="sign-in">
             <h3>Sign In</h3>
             <div>
               <label for="username">Username:</label>
-              <input id="username" name="username">
+              <input id="username" name="username" />
             </div>
             <div>
               <label for="password">Password:</label>
-              <input id="password" name="password">
+              <input id="password" name="password" />
             </div>
-            <input type="submit" value="Sign In">
+            <input type="submit" value="Sign In" />
           </form>
 
           <form id="sign-out">
             <h3>Sign Out</h3>
-            <input type="submit" value="Sign out">
+            <input type="submit" value="Sign out" />
           </form>
-        </section>
 
-        <!-- FREETS -->
-        <section id="freets">
-          <h3>Freet API</h3>
           <form id="view-all-freets">
-              <h3>View All Freets</h3>
-              <input type="submit" value="View All Freets">
-            </form>
-  
+            <h3>View All Freets</h3>
+            <input type="submit" value="View All Freets" />
+          </form>
+
           <form id="view-freets-by-author">
             <h3>View Freets By Author</h3>
             <div>
               <label for="author">Author:</label>
-              <input id="author" name="author">
+              <input id="author" name="author" />
             </div>
-            <input type="submit" value="View Freets By Author">
+            <input type="submit" value="View Freets By Author" />
           </form>
-  
+
           <form id="create-freet">
             <h3>Create Freet</h3>
             <div>
               <label for="content">Content:</label>
               <textarea id="content" name="content"></textarea>
             </div>
-            <input type="submit" value="Create Freet">
+            <div>
+              <label for="source">Source:</label>
+              <textarea id="source" name="source"></textarea>
+            </div>
+            <input type="submit" value="Create Freet" />
           </form>
-  
+
           <form id="edit-freet">
             <h3>Edit Freet</h3>
             <div>
               <label for="id">ID:</label>
-              <input id="id" name="id">
+              <input id="id" name="id" />
             </div>
             <div>
               <label for="content">Content:</label>
               <textarea id="content" name="content"></textarea>
             </div>
-            <input type="submit" value="Edit Freet">
+            <div>
+              <label for="source">Source:</label>
+              <textarea id="source" name="source"></textarea>
+            </div>
+            <input type="submit" value="Edit Freet" />
           </form>
-  
+
           <form id="delete-freet">
             <h3>Delete Freet</h3>
             <div>
               <label for="id">ID:</label>
-              <input id="id" name="id">
+              <input id="id" name="id" />
             </div>
-            <input type="submit" value="Delete Freet">
+            <input type="submit" value="Delete Freet" />
           </form>
-        </section>
 
-        <!-- FOLLOWS -->
-        <section id="follows">
-          <h3>Follows API</h3>
-          <form id="view-followers">
-            <h3>View Followers</h3>
-            <input type="submit" value="View Followers">
-          </form>
-  
-          <form id="view-following">
-            <h3>View Following</h3>
-            <input type="submit" value="View Following">
-          </form>
-  
-          <form id="follow">
+          <form id="follow-user">
             <h3>Follow</h3>
             <div>
               <label for="followee">Username:</label>
-              <input id="followee" name="followee">
+              <input id="followee" name="followee" />
             </div>
-            <input type="submit" value="Follow">
+            <input type="submit" value="Follow" />
           </form>
-  
-          <form id="unfollow">
+
+          <form id="unfollow-user">
             <h3>Unfollow</h3>
             <div>
-              <label for="followee">Username:</label>
-              <input id="followee" name="followee">
+              <label for="username">Username:</label>
+              <input id="username" name="username" />
             </div>
-            <input type="submit" value="Unfollow">
+            <input type="submit" value="Unfollow" />
           </form>
-        </section>
 
-        <!-- FOLLOW CATEGORIES -->
-        <!-- <section id="followCategories">
-          <h3>Follow Categories API</h3>
-          <form id="view-follow-categories">
-            <h3>View Follow Categories</h3>
-            <input type="submit" value="View Follow Categories">
-          </form>
-  
-          <form id="create-follow-category">
-            <h3>Create Follow Category</h3>
-            <div>
-              <label for="name">Name:</label>
-              <input id="name" name="name">
-            </div>
-            <input type="submit" value="Create Follow Category">
-          </form>
-  
-          <form id="view-follow-category">
-            <h3>View Follow Category</h3>
-            <div>
-              <label for="name">Name:</label>
-              <input id="name" name="name">
-            </div>
-            <input type="submit" value="View Follow Category">
-          </form>
-  
-          <form id="delete-follow-category">
-            <h3>Delete Follow Category</h3>
-            <div>
-              <label for="name">Name:</label>
-              <input id="name" name="name">
-            </div>
-            <input type="submit" value="Delete Follow Category">
-          </form>
-  
-          <form id="add-follow-category-member">
-            <h3>Add Follow Category Member</h3>
-            <div>
-              <label for="name">Follow Category Name:</label>
-              <input id="name" name="name">
-            </div>
-            <div>
-              <label for="member">Username:</label>
-              <input id="member" name="member">
-            </div>
-            <input type="submit" value="Add Follow Category Member">
-          </form>
-  
-          <form id="delete-follow-category-member">
-            <h3>Delete Follow Category Member</h3>
-            <div>
-              <label for="name">Follow Category Name:</label>
-              <input id="name" name="name">
-            </div>
-            <div>
-              <label for="member">Username:</label>
-              <input id="member" name="member">
-            </div>
-            <input type="submit" value="Delete Follow Category Member">
-          </form>
-        </section> -->
-
-        <!-- BOOKMARKS -->
-        <section id="bookmarks">
-          <h3>Bookmarks API</h3>
-          <form id="view-all-bookmarks">
-              <h3>View All Bookmarks</h3>
-              <input type="submit" value="View All Bookmarks">
-          </form>
-  
-          <form id="view-bookmarks-by-username">
-            <h3>View Bookmarks By Username</h3>
+          <form id="get-followers">
+            <h3>Get followers</h3>
             <div>
               <label for="username">Username:</label>
-              <input id="username" name="username">
+              <input id="username" name="username" />
             </div>
-            <input type="submit" value="View Bookmarks By Author">
+            <input type="submit" value="Get" />
           </form>
-  
-          <form id="create-bookmark">
-            <h3>Create Bookmark</h3>
-            <div>
-              <label for="freetId">Freet ID to bookmark:</label>
-              <textarea id="freetId" name="freetId"></textarea>
-            </div>
-            <input type="submit" value="Create Bookmark">
-          </form>
-  
-          <form id="delete-bookmark">
-            <h3>Delete Bookmark</h3>
-            <div>
-              <label for="id">ID:</label>
-              <input id="id" name="id">
-            </div>
-            <input type="submit" value="Delete Bookmark">
-          </form>
-        </section>
-
-      </div>
-    </section>
-    <section>
-      <h2>Response:</h2>
-      <div class="scrollbox">
-        <pre id="response" class="teletype"></pre>
-      </div>
-    </section>
-  </main>
-</body>
-
+        </div>
+      </section>
+      <section>
+        <h2>Response:</h2>
+        <div class="scrollbox">
+          <pre id="response" class="teletype"></pre>
+        </div>
+      </section>
+    </main>
+  </body>
 </html>

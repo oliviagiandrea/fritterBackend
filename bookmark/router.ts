@@ -91,7 +91,7 @@ router.delete(
   '/:bookmarkId?',
   [
     userValidator.isUserLoggedIn,
-    bookmarkValidator.isBookmarkExists,
+    bookmarkValidator.isBookmarkExists
   ],
   async (req: Request, res: Response) => {
     await BookmarkCollection.deleteOne(req.params.bookmarkId);

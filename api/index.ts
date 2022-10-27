@@ -9,10 +9,9 @@ import http from 'http';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import * as userValidator from '../user/middleware';
-import {bookmarkRouter} from '../bookmark/router';
-import {followRouter} from '../follow/router';
-import {freetRouter} from '../freet/router';
 import {userRouter} from '../user/router';
+import {freetRouter} from '../freet/router';
+import {followerRouter} from '../follower/router';
 
 // Load environmental variables
 dotenv.config({});
@@ -61,11 +60,13 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 // Initialize cookie session
-app.use(session({
-  secret: '61040',
-  resave: true,
-  saveUninitialized: false
-}));
+app.use(
+  session({
+    secret: '61040',
+    resave: true,
+    saveUninitialized: false
+  })
+);
 
 // This makes sure that if a user is logged in, they still exist in the database
 app.use(userValidator.isCurrentSessionUserExists);
@@ -78,8 +79,7 @@ app.get('/', (req: Request, res: Response) => {
 // Add routers from routes folder
 app.use('/api/users', userRouter);
 app.use('/api/freets', freetRouter);
-app.use('/api/bookmarks', bookmarkRouter);
-app.use('/api/follow', followRouter);
+app.use('/api/followers', followerRouter);
 
 // Catch all the other routes and display error message
 app.all('*', (req: Request, res: Response) => {
@@ -89,5 +89,7 @@ app.all('*', (req: Request, res: Response) => {
 // Create server to listen to request at specified port
 const server = http.createServer(app);
 server.listen(app.get('port'), () => {
-  console.log(`Express server running at http://localhost:${app.get('port') as number}`);
+  console.log(
+    `Express server running at http://localhost:${app.get('port') as number}`
+  );
 });

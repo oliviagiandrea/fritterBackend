@@ -1,5 +1,4 @@
 import type {Request, Response, NextFunction} from 'express';
-import {Types} from 'mongoose';
 import UserCollection from '../user/collection';
 
 /**
@@ -7,7 +6,11 @@ import UserCollection from '../user/collection';
  * a user may try to post a freet in some browser while the account has been deleted in another or
  * when a user tries to modify an account in some browser while it has been deleted in another
  */
-const isCurrentSessionUserExists = async (req: Request, res: Response, next: NextFunction) => {
+const isCurrentSessionUserExists = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   if (req.session.userId) {
     const user = await UserCollection.findOneByUserId(req.session.userId);
 
@@ -62,16 +65,28 @@ const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
 /**
  * Checks if a user with username and password in req.body exists
  */
-const isAccountExists = async (req: Request, res: Response, next: NextFunction) => {
-  const {username, password} = req.body as {username: string; password: string};
+const isAccountExists = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const {username, password} = req.body as {
+    username: string;
+    password: string;
+  };
 
   if (!username || !password) {
-    res.status(400).json({error: `Missing ${username ? 'password' : 'username'} credentials for sign in.`});
+    res.status(400).json({
+      error: `Missing ${
+        username ? 'password' : 'username'
+      } credentials for sign in.`
+    });
     return;
   }
 
   const user = await UserCollection.findOneByUsernameAndPassword(
-    username, password
+    username,
+    password
   );
 
   if (user) {
@@ -84,12 +99,16 @@ const isAccountExists = async (req: Request, res: Response, next: NextFunction) 
 /**
  * Checks if a username in req.body is already in use
  */
-const isUsernameNotAlreadyInUse = async (req: Request, res: Response, next: NextFunction) => {
+const isUsernameNotAlreadyInUse = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const user = await UserCollection.findOneByUsername(req.body.username);
 
   // If the current session user wants to change their username to one which matches
   // the current one irrespective of the case, we should allow them to do so
-  if (!user || (user?._id.toString() === req.session.userId)) {
+  if (!user || user?._id.toString() === req.session.userId) {
     next();
     return;
   }
@@ -134,7 +153,11 @@ const isUserLoggedOut = (req: Request, res: Response, next: NextFunction) => {
 /**
  * Checks if a user with userId as author id in req.query exists
  */
-const isAuthorExists = async (req: Request, res: Response, next: NextFunction) => {
+const isAuthorExists = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   if (!req.query.author) {
     res.status(400).json({
       error: 'Provided author username must be nonempty.'
@@ -142,10 +165,30 @@ const isAuthorExists = async (req: Request, res: Response, next: NextFunction) =
     return;
   }
 
-  const user = await UserCollection.findOneByUsername(req.query.author as string);
+  const user = await UserCollection.findOneByUsername(
+    req.query.author as string
+  );
   if (!user) {
     res.status(404).json({
-      error: `A user with username ${req.query.author as string} does not exist.`
+      error: `A user with username ${
+        req.query.author as string
+      } does not exist.`
+    });
+    return;
+  }
+
+  next();
+};
+
+const isUserExists = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const user = await UserCollection.findOneByUsername(req.params.username);
+  if (!user) {
+    res.status(404).json({
+      error: `A user with username ${req.params.username} does not exist.`
     });
     return;
   }
@@ -161,5 +204,6 @@ export {
   isAccountExists,
   isAuthorExists,
   isValidUsername,
-  isValidPassword
+  isValidPassword,
+  isUserExists
 };

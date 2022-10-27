@@ -3,7 +3,7 @@
  * e.g. for createUser, fields has properites 'username' and 'password'
  */
 
-function createUser(fields) {
+ function createUser(fields) {
   fetch('/api/users', {method: 'POST', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
     .then(showResponse)
     .catch(showResponse);

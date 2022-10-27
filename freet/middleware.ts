@@ -5,9 +5,15 @@ import FreetCollection from '../freet/collection';
 /**
  * Checks if a freet with freetId is req.params exists
  */
-const isFreetExists = async (req: Request, res: Response, next: NextFunction) => {
+const isFreetExists = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const validFormat = Types.ObjectId.isValid(req.params.freetId);
-  const freet = validFormat ? await FreetCollection.findOne(req.params.freetId) : '';
+  const freet = validFormat
+    ? await FreetCollection.findOne(req.params.freetId)
+    : '';
   if (!freet) {
     res.status(404).json({
       error: {
@@ -24,7 +30,11 @@ const isFreetExists = async (req: Request, res: Response, next: NextFunction) =>
  * Checks if the content of the freet in req.body is valid, i.e not a stream of empty
  * spaces and not more than 140 characters
  */
-const isValidFreetContent = (req: Request, res: Response, next: NextFunction) => {
+const isValidFreetContent = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const {content} = req.body as {content: string};
   if (!content.trim()) {
     res.status(400).json({
@@ -46,7 +56,11 @@ const isValidFreetContent = (req: Request, res: Response, next: NextFunction) =>
 /**
  * Checks if the current user is the author of the freet whose freetId is in req.params
  */
-const isValidFreetModifier = async (req: Request, res: Response, next: NextFunction) => {
+const isValidFreetModifier = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const freet = await FreetCollection.findOne(req.params.freetId);
   const userId = freet.authorId._id;
   if (req.session.userId !== userId.toString()) {
@@ -62,5 +76,5 @@ const isValidFreetModifier = async (req: Request, res: Response, next: NextFunct
 export {
   isValidFreetContent,
   isFreetExists,
-  isValidFreetModifier
+  isValidFreetModifier,
 };

@@ -13,6 +13,7 @@ export type Freet = {
   authorId: Types.ObjectId;
   dateCreated: Date;
   content: string;
+  source: string;
   dateModified: Date;
 };
 
@@ -21,6 +22,7 @@ export type PopulatedFreet = {
   authorId: User;
   dateCreated: Date;
   content: string;
+  source: string;
   dateModified: Date;
 };
 
@@ -44,6 +46,11 @@ const FreetSchema = new Schema<Freet>({
   content: {
     type: String,
     required: true
+  },
+  // the cited source (not required)
+  source: {
+    type: String,
+    required: false
   },
   // The date the freet was modified
   dateModified: {

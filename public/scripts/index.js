@@ -42,6 +42,10 @@ const formsAndHandlers = {
   "follow-user": follow,
   "unfollow-user": unfollow,
   "get-followers": getFollowers,
+  "view-all-bookmarks": viewAllBookmarks,
+  "view-bookmarks-by-username": viewBookmarksByUsername,
+  "create-bookmark": createBookmark,
+  "delete-bookmark": deleteBookmark,
 };
 
 // Attach handlers to forms

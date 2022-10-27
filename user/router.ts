@@ -5,7 +5,7 @@ import UserCollection from './collection';
 import * as userValidator from '../user/middleware';
 import * as util from './util';
 import FollowerCollection from '../follower/collection';
-import BookmarkCollection from 'bookmark/collection';
+import BookmarkCollection from '../bookmark/collection';
 
 const router = express.Router();
 
